@@ -41,25 +41,37 @@ if ($dataIsOk)
         {
             http_response_code(200);
 
-            echo json_encode(array("message" => "meal was deleted", "status" => 200));
+            echo json_encode([
+                "message" => "meal was deleted",
+                "status" => 200
+            ]);
         } else
         {
             http_response_code(404);
 
-            echo json_encode(array("message" => "meal was not deleted: 0 rows returned", "status" => 404));
+            echo json_encode([
+                "message" => "meal was not deleted: 0 rows returned",
+                "status" => 404
+            ]);
         }
 
     } else
     {
         http_response_code(503);
 
-        echo json_encode(array("message" => "meal was not deleted: service unavailable", "status" => 503));
+        echo json_encode([
+            "message" => "meal was not deleted: service unavailable",
+            "status" => 503
+        ]);
     }
 } else
 {
     http_response_code(400);
 
-    echo json_encode(array("message" => "meal was not deleted: incomplete data", "status" => 400));
+    echo json_encode([
+        "message" => "meal was not deleted: incomplete data",
+        "status" => 400
+    ]);
 }
 
 

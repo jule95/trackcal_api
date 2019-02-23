@@ -32,17 +32,26 @@ if ($mealsWereDeleted["bool"])
     {
         http_response_code(200);
 
-        echo json_encode(array("message" => "all meals deleted", "status" => 200));
+        echo json_encode([
+            "message" => "all meals deleted",
+            "status" => 200
+        ]);
     } else
     {
         http_response_code(404);
 
-        echo json_encode(array("message" => "no meal deleted: 0 rows returned", "status" => 404));
+        echo json_encode([
+            "message" => "no meal deleted: 0 rows returned",
+            "status" => 404
+        ]);
     }
 
 } else
 {
     http_response_code(503);
 
-    echo json_encode(array("message" => "no meals deleted: service unavailable", "status" => 503));
+    echo json_encode([
+        "message" => "no meals deleted: service unavailable",
+        "status" => 503
+    ]);
 }
