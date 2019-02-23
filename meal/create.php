@@ -29,12 +29,7 @@ $conn = $database->getConnection();
 //create a new meal
 $meal = new Meal($conn);
 
-/*
- * get post data
- * file_get_contents -> reads entire file into string
- * php://input -> read raw data from post request
- * json_encode -> creates json representation of data
- */
+//get post data
 $data = json_decode(file_get_contents("php://input"));
 
 //check if data is available (optional: empty($data->id))

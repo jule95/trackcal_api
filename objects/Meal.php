@@ -52,10 +52,10 @@ class Meal
         $this->name = htmlspecialchars(strip_tags($this->name));
         $this->calories = htmlspecialchars(strip_tags($this->calories));
 
-        //execute statement, bind values and check if statement was executed properly
+        //prepare statement params
         $stmtParams = ["name" => $this->name, "calories" => $this->calories];
 
-        //check if statement was executed properly
+        //execute statement with params and check if everything went ok
         if ($stmt->execute($stmtParams))
         {
             return true;
@@ -74,6 +74,7 @@ class Meal
         $stmt = $this->conn->prepare($query);
 
         //sanitize input
+        $this->id = htmlspecialchars(strip_tags($this->id));
         $this->name = htmlspecialchars(strip_tags($this->name));
         $this->calories = htmlspecialchars(strip_tags($this->calories));
 
@@ -125,10 +126,10 @@ class Meal
         //execute statement and check if everything went ok
         if($stmt->execute())
         {
-            return true;
+            return ["bool" => true, "rowCount" => $stmt->rowCount()];
         }
 
-        return false;
+        return ["bool" => false, "rowCount" => null];
     }
 }
 

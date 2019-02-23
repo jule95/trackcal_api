@@ -11,7 +11,7 @@ header("Access-Control-Allow-Origin: *");
 //set format of retrieved data to json and characters set to utf8
 header("Content-Type: application/json; charset=UTF-8");
 //specify method which can be used to access this resource
-header("Access-Control-Allow-Methods: POST"); //POST instead of DELETE???
+header("Access-Control-Allow-Methods: DELETE"); //POST instead of DELETE???
 //???
 header("Access-Control-Max-Age: 3600");
 //indicate which headers can actually be used to send this post request
