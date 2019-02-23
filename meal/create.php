@@ -41,24 +41,26 @@ if ($dataIsOk)
     $meal->name = $data->name;
     $meal->calories = $data->calories;
 
+    $mealWasCreated = $meal->create();
+
     //create meal and check if was executed properly
-    if ($meal->create())
+    if ($mealWasCreated["bool"])
     {
         //set response code 201 - created
         http_response_code(201);
 
-        echo json_encode(array("message" => "meal was created"));
+        echo json_encode(array("message" => "meal was created", "status" => 201, "newId" => $mealWasCreated["lastInsertId"]));
     } else
     {
         //set response code 503 - service unavailable
         http_response_code(503);
 
-        echo json_encode(array("message" => "meal was not created: service unavailable"));
+        echo json_encode(array("message" => "meal was not created: service unavailable", "status" => 503));
     }
 } else
 {
     //set response code 400 - bad request
     http_response_code(400);
 
-    echo json_encode(array("message" => "meal was not created: incomplete data"));
+    echo json_encode(array("message" => "meal was not created: incomplete data", "status" => 400));
 }

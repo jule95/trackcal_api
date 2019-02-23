@@ -63,6 +63,6 @@ if ($num > 0)
 
     // tell the user no products found
     echo json_encode(
-        array("message" => "no products found")
+        array("message" => "no products found", "status" => 404)
     );
 }

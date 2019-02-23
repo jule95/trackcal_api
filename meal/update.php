@@ -51,14 +51,14 @@ if ($dataIsOk)
             http_response_code(200);
 
             //tell the user
-            echo json_encode(array("message" => "product was updated"));
+            echo json_encode(array("message" => "product was updated", "status" => 200));
         } else
         {
             // set response code - 404 not found
-            http_response_code(200);
+            http_response_code(404);
 
             //tell the user
-            echo json_encode(array("message" => "product was not updated: zero rows returned"));
+            echo json_encode(array("message" => "product was not updated: zero rows returned", "status" => 404));
         }
 
     } else
@@ -67,7 +67,7 @@ if ($dataIsOk)
         http_response_code(503);
 
         // tell the user
-        echo json_encode(array("message" => "meal was not updated: service unavailable"));
+        echo json_encode(array("message" => "meal was not updated: service unavailable", "status" => 503));
     }
 } else
 {
@@ -75,5 +75,5 @@ if ($dataIsOk)
     http_response_code(400);
 
     //tell the user
-    echo json_encode(array("message" => "meal was not updated: incomplete data"));
+    echo json_encode(array("message" => "meal was not updated: incomplete data", "status" => 400));
 }

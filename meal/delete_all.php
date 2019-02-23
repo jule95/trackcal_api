@@ -26,22 +26,23 @@ $conn = $database->getConnection();
 $meal = new Meal($conn);
 $mealsWereDeleted = $meal->deleteAll();
 
-if($mealsWereDeleted["bool"])
+if ($mealsWereDeleted["bool"])
 {
-    if($mealsWereDeleted["rowCount"] > 0)
+    if ($mealsWereDeleted["rowCount"] > 0)
     {
-        http_response_code(202);
+        http_response_code(200);
 
-        echo json_encode(array("message" => "all meals deleted"));
-    } else {
+        echo json_encode(array("message" => "all meals deleted", "status" => 200));
+    } else
+    {
         http_response_code(404);
 
-        echo json_encode(array("message" => "no meal deleted: 0 rows returned"));
+        echo json_encode(array("message" => "no meal deleted: 0 rows returned", "status" => 404));
     }
 
 } else
 {
-    http_response_code( 503);
+    http_response_code(503);
 
-    echo json_encode(array("message" => "no meals deleted: service unavailable"));
+    echo json_encode(array("message" => "no meals deleted: service unavailable", "status" => 503));
 }

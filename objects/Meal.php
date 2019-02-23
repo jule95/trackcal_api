@@ -58,10 +58,10 @@ class Meal
         //execute statement with params and check if everything went ok
         if ($stmt->execute($stmtParams))
         {
-            return true;
+            return ["bool" => true, "lastInsertId" => $this->conn->lastInsertId()];
         }
 
-        return false;
+        return ["bool" => false, "lastInsertedId" => null];
     }
 
     //update existing product
