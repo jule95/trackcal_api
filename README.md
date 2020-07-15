@@ -1,4 +1,12 @@
 **This is a simple REST API used for the calorie tracker application.**<br/><br/>
+<u>How To Deploy</u>
+<ol>
+    <li>Deploy <i>trackcal_api</i> forder to local Apache.</li>
+    <li>Run SQL script on local MySQL server.</li>
+    <li>Check credentials in <i>Database.php</i> and/or configure accordingly.</li>
+    <li>Perform HTTP operations via Postman.</li>
+</ol>
+
 <u>HTTP Operation Scheme</u>
 
 <b>Read</b><br/>
