@@ -13,6 +13,7 @@ class Database
     private $db_name = "trackcal";
     private $username = "root";
     private $password = "";
+
     public $conn;
 
     function getConnection()
