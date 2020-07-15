@@ -20,4 +20,4 @@ Payload:
 <pre>{"id":1}</pre>
 
 <b>Delete All</b><br/>
-DELETE request to <i>deleteAll.php</i>
+DELETE request to <i>delete_all.php</i>
