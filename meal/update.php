@@ -17,9 +17,10 @@ header("Access-Control-Max-Age: 3600");
 //indicate which headers can actually be used to send this post request
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-//include database and meal object
+//include required resources
 include_once "../config/Database.php";
 include_once "../objects/Meal.php";
+include_once "../helper/Response.php";
 
 //instantiate database
 $database = new Database();
@@ -49,55 +50,26 @@ if ($_SERVER["REQUEST_METHOD"] === "PUT")
         {
             if ($mealHasUpdated["rowCount"] > 0)
             {
-                // set response code - 200 ok
-                http_response_code(200);
-
-                //tell the user
-                echo json_encode([
-                    "message" => "meal was updated",
-                    "status" => 200
-                ]);
+                //send success response
+                Response::sendResponse(true, null, 200, null);
             } else
             {
-                // set response code - 404 not found
-                http_response_code(404);
-
-                //tell the user
-                echo json_encode([
-                    "message" => "meal was not updated: zero rows returned",
-                    "status" => 404
-                ]);
+                //send failure response because no rows were updated
+                Response::sendResponse(false, "0 rows updated", 404, null);
             }
 
         } else
         {
-            // set response code - 503 service unavailable
-            http_response_code(503);
-
-            // tell the user
-            echo json_encode([
-                "message" => "meal was not updated: service unavailable",
-                "status" => 503
-            ]);
+            //send failure response because service is unavailable
+            Response::sendResponse(false, "service unavailable", 503, null);
         }
     } else
     {
-        //set response code 400 - bad request
-        http_response_code(400);
-
-        //tell the user
-        echo json_encode([
-            "message" => "meal was not updated: incomplete data",
-            "status" => 400
-        ]);
+        //send failure response because of incomplete data
+        Response::sendResponse(false, "incomplete data", 400, null);
     }
 } else
 {
-    //set response code 400 - method not allowed
-    http_response_code(405);
-
-    echo json_encode([
-        "message" => "meal was not created: method not allowed",
-        "status" => 405
-    ]);
+    //send failure response because of unallowed method
+    Response::sendResponse(false, "method not allowed", 405, null);
 }
