@@ -52,7 +52,7 @@ if ($dataIsOk)
 
             //tell the user
             echo json_encode([
-                "message" => "product was updated",
+                "message" => "meal was updated",
                 "status" => 200
             ]);
         } else
@@ -62,7 +62,7 @@ if ($dataIsOk)
 
             //tell the user
             echo json_encode([
-                "message" => "product was not updated: zero rows returned",
+                "message" => "meal was not updated: zero rows returned",
                 "status" => 404
             ]);
         }
