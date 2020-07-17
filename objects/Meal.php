@@ -39,7 +39,7 @@ class Meal
         $this->calories = $calories;
     }
 
-    // read products
+    // read meals
     public function read()
     {
         //create query for selecting entire table
@@ -55,7 +55,7 @@ class Meal
         return $stmt;
     }
 
-    //create a new product
+    //create a new meal
     public function create()
     {
         //create insert into query
@@ -80,7 +80,7 @@ class Meal
         return ["bool" => false, "lastInsertedId" => null];
     }
 
-    //update existing product
+    //update existing meal
     public function update()
     {
         //create update query
@@ -106,7 +106,7 @@ class Meal
         return ["bool" => false, "rowCount" => null];
     }
 
-    //delete an existing product
+    //delete an existing meal
     public function delete()
     {
         //create delete query
@@ -130,7 +130,7 @@ class Meal
         return ["bool" => false, "rowCount" => null];
     }
 
-    //delete all existing products
+    //delete all existing meal
     public function deleteAll()
     {
         //create delete all query
