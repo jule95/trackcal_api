@@ -10,7 +10,7 @@ class Database
 {
     //values for database connection
     private $host = "localhost";
-    private $db_name = "trackcal";
+    private $dbName = "trackcal";
     private $username = "root";
     private $password = "";
 
@@ -24,7 +24,7 @@ class Database
         try
         {
             //local var to hold dns data for pdo object
-            $dns = "mysql:host=" . $this->host . ";dbname=" . $this->db_name;
+            $dns = "mysql:host=" . $this->host . ";dbname=" . $this->dbName;
 
             //create new pdo object using values defined above
             $this->conn = new PDO($dns, $this->username, $this->password);
@@ -36,7 +36,7 @@ class Database
         } catch (PDOException $exception)
         {
             //output error if connection to database failed
-            echo "failed to connect to db " . $this->db_name . ": " . $exception->getMessage();
+            echo "failed to connect to db " . $this->dbName . ": " . $exception->getMessage();
         }
 
         return $this->conn;

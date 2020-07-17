@@ -10,7 +10,7 @@ class Meal
 {
     //db properties
     private $conn;
-    private $table_name = "meal";
+    private $tableName = "meal";
 
     //object properties
     private $id;
@@ -59,7 +59,7 @@ class Meal
     public function read()
     {
         //create query for selecting entire table
-        $query = "SELECT id, description, calories FROM " .$this->table_name;
+        $query = "SELECT id, description, calories FROM " . $this->tableName;
 
         //prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -75,7 +75,7 @@ class Meal
     public function create()
     {
         //create insert into query
-        $query = "INSERT INTO " .$this->table_name . " (description, calories) values(:description, :calories)";
+        $query = "INSERT INTO " . $this->tableName . " (description, calories) values(:description, :calories)";
 
         //prepare the statement
         $stmt = $this->conn->prepare($query);
@@ -100,7 +100,7 @@ class Meal
     public function update()
     {
         //create update query
-        $query = "UPDATE meal SET description = :description, calories = :calories WHERE id = :id";
+        $query = "UPDATE " . $this->tableName . " SET description = :description, calories = :calories WHERE id = :id";
 
         //prepare the statement
         $stmt = $this->conn->prepare($query);
@@ -126,7 +126,7 @@ class Meal
     public function delete()
     {
         //create delete query
-        $query = "DELETE FROM meal WHERE id = :id";
+        $query = "DELETE FROM " . $this->tableName . " WHERE id = :id";
 
         //prepare the statement
         $stmt = $this->conn->prepare($query);
@@ -150,13 +150,13 @@ class Meal
     public function deleteAll()
     {
         //create delete all query
-        $query = "DELETE FROM meal";
+        $query = "DELETE FROM " . $this->tableName;
 
         //prepare the statement
         $stmt = $this->conn->prepare($query);
 
         //execute statement and check if everything went ok
-        if($stmt->execute())
+        if ($stmt->execute())
         {
             return ["bool" => true, "rowCount" => $stmt->rowCount()];
         }
