@@ -30,8 +30,9 @@ Payload:
 <b>Delete All</b><br/>
 DELETE request to <i>delete_all.php</i>
 
-**To-Do**
+**To-Do:**
 <ul>
-<li>Implement routing for clean resource paths (e.g. UPDATE to <i>https://myapi.com/meal/2</i>.</li>
+<li>Implement routing for clean resource paths (e.g. UPDATE to <i>https://myapi.com/meal/2</i>.)</li>
 <li>Implement test cases using Guzzle and PHPUnit to validate result.</li>
+<li>Validate request method in endpoint resources to restrict server to server communication.</li>
 </ul>
