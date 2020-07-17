@@ -17,9 +17,10 @@ header("Access-Control-Max-Age: 3600");
 //indicate which headers can actually be used to send this post request
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-//include database and meal object
+//include required resources
 include_once "../config/Database.php";
 include_once "../objects/Meal.php";
+include_once "../helper/Response.php";
 
 //instantiate database
 $database = new Database();
@@ -48,41 +49,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         //create meal and check if was executed properly
         if ($mealWasCreated["bool"])
         {
-            //set response code 201 - created
-            http_response_code(201);
+            $additional = ["lastInsertId" => $mealWasCreated["lastInsertId"]];
 
-            echo json_encode([
-                "message" => "meal was created",
-                "status" => 201,
-                "newId" => $mealWasCreated["lastInsertId"]
-            ]);
+            //send success response
+            Response::sendResponse(true, null, 201, $additional);
         } else
         {
-            //set response code 503 - service unavailable
-            http_response_code(503);
-
-            echo json_encode([
-                "message" => "meal was not created: service unavailable",
-                "status" => 503
-            ]);
+            //send failure response because service is unavailable
+            Response::sendResponse(false, "service unavailable", 503, null);
         }
     } else
     {
-        //set response code 400 - bad request
-        http_response_code(400);
-
-        echo json_encode([
-            "message" => "meal was not created: incomplete data",
-            "status" => 400
-        ]);
+        //send failure response because of incomplete data
+        Response::sendResponse(false, "incomplete data", 400, null);
     }
 } else
 {
-    //set response code 400 - method not allowed
-    http_response_code(405);
-
-    echo json_encode([
-        "message" => "meal was not created: method not allowed",
-        "status" => 405
-    ]);
+    //send failure response because of unallowed method
+    Response::sendResponse(false, "method not allowed", 405, null);
 }
