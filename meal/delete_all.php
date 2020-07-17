@@ -17,9 +17,8 @@ header("Access-Control-Max-Age: 3600");
 //indicate which headers can actually be used to send this post request
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-//include database configuration to get connection
+//include database and meal object
 include_once "../config/Database.php";
-//include product meal project to perform a create
 include_once "../objects/Meal.php";
 
 //instantiate database
