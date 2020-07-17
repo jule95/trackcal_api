@@ -15,12 +15,12 @@ GET request to <i>read.php</i>
 <b>Create</b><br/>
 POST request to <i>create.php</i><br/>
 Payload:
-<pre>{"name":"test", "calories":100}</pre>
+<pre>{"description":"test", "calories":100}</pre>
 
 <b>Update</b><br/>
 PUT request to <i>update.php</i><br/>
 Payload:
-<pre>{"id":1, "name":"updated name", "calories":100}</pre>
+<pre>{"id":1, "description":"updated description", "calories":100}</pre>
 
 <b>Delete</b><br/>
 DELETE request to <i>delete.php</i><br/>
