@@ -26,37 +26,49 @@ $database = new Database();
 //create new connection to database
 $conn = $database->getConnection();
 
-//create a new meal
-$meal = new Meal($conn);
-
-$mealsWereDeleted = $meal->deleteAll();
-
-if ($mealsWereDeleted["bool"])
+if ($_SERVER["REQUEST_METHOD"] === "DELETE")
 {
-    if ($mealsWereDeleted["rowCount"] > 0)
-    {
-        http_response_code(200);
+    //create a new meal
+    $meal = new Meal($conn);
 
-        echo json_encode([
-            "message" => "all meals deleted",
-            "status" => 200
-        ]);
+    $mealsWereDeleted = $meal->deleteAll();
+
+    if ($mealsWereDeleted["bool"])
+    {
+        if ($mealsWereDeleted["rowCount"] > 0)
+        {
+            http_response_code(200);
+
+            echo json_encode([
+                "message" => "all meals deleted",
+                "status" => 200
+            ]);
+        } else
+        {
+            http_response_code(404);
+
+            echo json_encode([
+                "message" => "no meal deleted: 0 rows returned",
+                "status" => 404
+            ]);
+        }
+
     } else
     {
-        http_response_code(404);
+        http_response_code(503);
 
         echo json_encode([
-            "message" => "no meal deleted: 0 rows returned",
-            "status" => 404
+            "message" => "no meals deleted: service unavailable",
+            "status" => 503
         ]);
     }
-
 } else
 {
-    http_response_code(503);
+    //set response code 400 - method not allowed
+    http_response_code(405);
 
     echo json_encode([
-        "message" => "no meals deleted: service unavailable",
-        "status" => 503
+        "message" => "meal was not created: method not allowed",
+        "status" => 405
     ]);
 }

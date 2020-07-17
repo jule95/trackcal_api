@@ -32,45 +32,57 @@ $data = json_decode(file_get_contents("php://input"));
 //check if data is available (optional: empty($data->id))
 $dataIsOk = !empty($data->description) && !empty($data->calories);
 
-if ($dataIsOk)
+if ($_SERVER["REQUEST_METHOD"] === "POST")
 {
-    //create a new meal
-    $meal = new Meal($conn);
-
-    //set properties from received data
-    $meal->setDescription($data->description);
-    $meal->setCalories($data->calories);
-
-    $mealWasCreated = $meal->create();
-
-    //create meal and check if was executed properly
-    if ($mealWasCreated["bool"])
+    if ($dataIsOk)
     {
-        //set response code 201 - created
-        http_response_code(201);
+        //create a new meal
+        $meal = new Meal($conn);
 
-        echo json_encode([
-            "message" => "meal was created",
-            "status" => 201,
-            "newId" => $mealWasCreated["lastInsertId"]
-        ]);
+        //set properties from received data
+        $meal->setDescription($data->description);
+        $meal->setCalories($data->calories);
+
+        $mealWasCreated = $meal->create();
+
+        //create meal and check if was executed properly
+        if ($mealWasCreated["bool"])
+        {
+            //set response code 201 - created
+            http_response_code(201);
+
+            echo json_encode([
+                "message" => "meal was created",
+                "status" => 201,
+                "newId" => $mealWasCreated["lastInsertId"]
+            ]);
+        } else
+        {
+            //set response code 503 - service unavailable
+            http_response_code(503);
+
+            echo json_encode([
+                "message" => "meal was not created: service unavailable",
+                "status" => 503
+            ]);
+        }
     } else
     {
-        //set response code 503 - service unavailable
-        http_response_code(503);
+        //set response code 400 - bad request
+        http_response_code(400);
 
         echo json_encode([
-            "message" => "meal was not created: service unavailable",
-            "status" => 503
+            "message" => "meal was not created: incomplete data",
+            "status" => 400
         ]);
     }
 } else
 {
-    //set response code 400 - bad request
-    http_response_code(400);
+    //set response code 400 - method not allowed
+    http_response_code(405);
 
     echo json_encode([
-        "message" => "meal was not created: incomplete data",
-        "status" => 400
+        "message" => "meal was not created: method not allowed",
+        "status" => 405
     ]);
 }

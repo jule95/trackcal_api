@@ -32,55 +32,63 @@ $data = json_decode(file_get_contents("php://input"));
 //check if data is available
 $dataIsOk = !empty($data->id);
 
-if ($dataIsOk)
+if ($_SERVER["REQUEST_METHOD"] === "DELETE")
 {
-    //create a new meal
-    $meal = new Meal($conn);
-
-    //set properties from received data
-    $meal->setId($data->id);
-
-    $mealWasDeleted = $meal->delete();
-
-    if ($mealWasDeleted["bool"])
+    if ($dataIsOk)
     {
-        if ($mealWasDeleted["rowCount"] > 0)
-        {
-            http_response_code(200);
+        //create a new meal
+        $meal = new Meal($conn);
 
-            echo json_encode([
-                "message" => "meal was deleted",
-                "status" => 200
-            ]);
+        //set properties from received data
+        $meal->setId($data->id);
+
+        $mealWasDeleted = $meal->delete();
+
+        if ($mealWasDeleted["bool"])
+        {
+            if ($mealWasDeleted["rowCount"] > 0)
+            {
+                http_response_code(200);
+
+                echo json_encode([
+                    "message" => "meal was deleted",
+                    "status" => 200
+                ]);
+            } else
+            {
+                http_response_code(404);
+
+                echo json_encode([
+                    "message" => "meal was not deleted: 0 rows returned",
+                    "status" => 404
+                ]);
+            }
+
         } else
         {
-            http_response_code(404);
+            http_response_code(503);
 
             echo json_encode([
-                "message" => "meal was not deleted: 0 rows returned",
-                "status" => 404
+                "message" => "meal was not deleted: service unavailable",
+                "status" => 503
             ]);
         }
-
     } else
     {
-        http_response_code(503);
+        http_response_code(400);
 
         echo json_encode([
-            "message" => "meal was not deleted: service unavailable",
-            "status" => 503
+            "message" => "meal was not deleted: incomplete data",
+            "status" => 400
         ]);
     }
 } else
 {
-    http_response_code(400);
+    //set response code 400 - method not allowed
+    http_response_code(405);
 
     echo json_encode([
-        "message" => "meal was not deleted: incomplete data",
-        "status" => 400
+        "message" => "meal was not created: method not allowed",
+        "status" => 405
     ]);
 }
-
-
-
-

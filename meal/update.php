@@ -32,60 +32,72 @@ $data = json_decode(file_get_contents("php://input"));
 //check if data was received in body of request (0 evaluates to true)
 $dataIsOk = !empty($data->id) && !empty($data->description) && !empty($data->calories);
 
-if ($dataIsOk)
+if ($_SERVER["REQUEST_METHOD"] === "PUT")
 {
-    //create a new meal
-    $meal = new Meal($conn);
-
-    $meal->setId($data->id);
-    $meal->setDescription($data->description);
-    $meal->setCalories($data->calories);
-
-    $mealHasUpdated = $meal->update();
-
-    if ($mealHasUpdated["bool"])
+    if ($dataIsOk)
     {
-        if ($mealHasUpdated["rowCount"] > 0)
-        {
-            // set response code - 200 ok
-            http_response_code(200);
+        //create a new meal
+        $meal = new Meal($conn);
 
-            //tell the user
-            echo json_encode([
-                "message" => "meal was updated",
-                "status" => 200
-            ]);
+        $meal->setId($data->id);
+        $meal->setDescription($data->description);
+        $meal->setCalories($data->calories);
+
+        $mealHasUpdated = $meal->update();
+
+        if ($mealHasUpdated["bool"])
+        {
+            if ($mealHasUpdated["rowCount"] > 0)
+            {
+                // set response code - 200 ok
+                http_response_code(200);
+
+                //tell the user
+                echo json_encode([
+                    "message" => "meal was updated",
+                    "status" => 200
+                ]);
+            } else
+            {
+                // set response code - 404 not found
+                http_response_code(404);
+
+                //tell the user
+                echo json_encode([
+                    "message" => "meal was not updated: zero rows returned",
+                    "status" => 404
+                ]);
+            }
+
         } else
         {
-            // set response code - 404 not found
-            http_response_code(404);
+            // set response code - 503 service unavailable
+            http_response_code(503);
 
-            //tell the user
+            // tell the user
             echo json_encode([
-                "message" => "meal was not updated: zero rows returned",
-                "status" => 404
+                "message" => "meal was not updated: service unavailable",
+                "status" => 503
             ]);
         }
-
     } else
     {
-        // set response code - 503 service unavailable
-        http_response_code(503);
+        //set response code 400 - bad request
+        http_response_code(400);
 
-        // tell the user
+        //tell the user
         echo json_encode([
-            "message" => "meal was not updated: service unavailable",
-            "status" => 503
+            "message" => "meal was not updated: incomplete data",
+            "status" => 400
         ]);
     }
 } else
 {
-    //set response code 400 - bad request
-    http_response_code(400);
+    //set response code 400 - method not allowed
+    http_response_code(405);
 
-    //tell the user
     echo json_encode([
-        "message" => "meal was not updated: incomplete data",
-        "status" => 400
+        "message" => "meal was not created: method not allowed",
+        "status" => 405
     ]);
 }
