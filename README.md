@@ -1,4 +1,4 @@
-**This is a simple REST API demo.**<br/><br/>
+####This is a simple REST API demo.
 <u>How To Deploy</u>
 <ol>
     <li>Copy <i>trackcal_api</i> folder to local Apache.</li>
@@ -30,10 +30,8 @@ Payload:
 <b>Delete All</b><br/>
 DELETE request to <i>delete_all.php</i>
 
-**To-Do:**
-<ul>
-<li>Implement routing for clean resource paths (e.g. UPDATE to <i>https://myapi.com/meal/2</i>.)</li>
-<li>Implement test cases using Guzzle and PHPUnit to validate result.</li>
-<li>Static helper class to compact JSON server responses?</li>
-<li><del>Validate request method in endpoint resources to restrict server to server communication.</del></li>
-</ul>
+####To-Do:
+* [ ] Implement routing for clean resource paths (e.g. UPDATE to https://myapi.com/object/1).
+* [ ] Implement test cases using Guzzle and PHPUnit to validate result.
+* [X] Static helper class to compact JSON server responses.
+* [X] Validate request method in endpoint resources to restrict server-to-server communication.
