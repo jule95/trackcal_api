@@ -13,14 +13,46 @@ class Meal
     private $table_name = "meal";
 
     //object properties
-    public $id;
-    public $name;
-    public $calories;
+    private $id;
+    private $description;
+    private $calories;
 
     //constructor to initialize db connection
     public function __construct($db)
     {
         $this->conn = $db;
+    }
+
+    //setter
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function setCalories($calories)
+    {
+        $this->calories = $calories;
+    }
+
+    //getter
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function getCalories()
+    {
+        return $this->calories;
     }
 
     // read products
