@@ -39,22 +39,6 @@ class Meal
         $this->calories = $calories;
     }
 
-    //getter
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    public function getCalories()
-    {
-        return $this->calories;
-    }
-
     // read products
     public function read()
     {
