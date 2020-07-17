@@ -59,7 +59,7 @@ class Meal
     public function read()
     {
         //create query for selecting entire table
-        $query = "SELECT id, name, calories FROM meal";
+        $query = "SELECT id, description, calories FROM " .$this->table_name;
 
         //prepare query statement
         $stmt = $this->conn->prepare($query);
@@ -75,17 +75,17 @@ class Meal
     public function create()
     {
         //create insert into query
-        $query = "INSERT INTO meal (name, calories) values(:name, :calories)";
+        $query = "INSERT INTO " .$this->table_name . " (description, calories) values(:description, :calories)";
 
         //prepare the statement
         $stmt = $this->conn->prepare($query);
 
         //sanitize user input
-        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->description = htmlspecialchars(strip_tags($this->description));
         $this->calories = htmlspecialchars(strip_tags($this->calories));
 
         //prepare statement params
-        $stmtParams = ["name" => $this->name, "calories" => $this->calories];
+        $stmtParams = ["description" => $this->description, "calories" => $this->calories];
 
         //execute statement with params and check if everything went ok
         if ($stmt->execute($stmtParams))
@@ -100,18 +100,18 @@ class Meal
     public function update()
     {
         //create update query
-        $query = "UPDATE meal SET name = :name, calories = :calories WHERE id = :id";
+        $query = "UPDATE meal SET description = :description, calories = :calories WHERE id = :id";
 
         //prepare the statement
         $stmt = $this->conn->prepare($query);
 
         //sanitize input
         $this->id = htmlspecialchars(strip_tags($this->id));
-        $this->name = htmlspecialchars(strip_tags($this->name));
+        $this->description = htmlspecialchars(strip_tags($this->description));
         $this->calories = htmlspecialchars(strip_tags($this->calories));
 
         //prepare statement params
-        $stmtParams = ["id" => $this->id, "name" => $this->name, "calories" => $this->calories];
+        $stmtParams = ["id" => $this->id, "description" => $this->description, "calories" => $this->calories];
 
         //execute statement with params and check if everything went ok
         if ($stmt->execute($stmtParams))
