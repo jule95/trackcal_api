@@ -6,6 +6,7 @@
  * Time: 18:31
  */
 
+//note: no cors headers required since cors does not apply to GET (simple) requests
 //allow all origins to access this resource
 header("Access-Control-Allow-Origin: *");
 //set format of retrieved data to json and characters set to utf8
@@ -30,32 +31,26 @@ $num = $stmt->rowCount();
 if ($num > 0)
 {
     //create array for meals
-    $meals_arr = array();
-    $meals_arr["records"] = array();
+    $mealsArr = array();
+    $mealsArr["records"] = array();
 
     //retrieve table content
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
     {
-        /*
-         * extract row
-         * by doing this values of row can be accessed by $meal rather than $row["meal"]
-         */
-        extract($row);
-
-        $meal_item = array(
-            "id" => $id,
-            "name" => $name,
-            "calories" => $calories
+        $mealItem = array(
+            "id" => $row["id"],
+            "description" => $row["description"],
+            "calories" => $row["calories"]
         );
 
-        array_push($meals_arr["records"], $meal_item);
+        array_push($mealsArr["records"], $mealItem);
     }
 
     // set response code - 200 OK
     http_response_code(200);
 
     // show products data in json format
-    echo json_encode($meals_arr);
+    echo json_encode($mealsArr);
 } else
 {
     // set response code - 404 Not found
