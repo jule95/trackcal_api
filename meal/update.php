@@ -25,20 +25,21 @@ include_once "../objects/Meal.php";
 $database = new Database();
 //create new connection to database
 $conn = $database->getConnection();
-//create a new meal
-$meal = new Meal($conn);
 
 //get post data
 $data = json_decode(file_get_contents("php://input"));
 
 //check if data was received in body of request (0 evaluates to true)
-$dataIsOk = !empty($data->id) && !empty($data->name) && !empty($data->calories);
+$dataIsOk = !empty($data->id) && !empty($data->description) && !empty($data->calories);
 
 if ($dataIsOk)
 {
-    $meal->id = $data->id;
-    $meal->name = $data->name;
-    $meal->calories = $data->calories;
+    //create a new meal
+    $meal = new Meal($conn);
+
+    $meal->setId($data->id);
+    $meal->setDescription($data->description);
+    $meal->setCalories($data->calories);
 
     $mealHasUpdated = $meal->update();
 
