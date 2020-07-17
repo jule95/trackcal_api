@@ -2,11 +2,6 @@
 SET default_storage_engine = innodb;
 SET sql_safe_updates = 0;
 
--- table config
-
-ALTER TABLE meal
-    AUTO_INCREMENT = 1;
-
 -- creating database
 DROP DATABASE IF EXISTS trackcal;
 
@@ -26,6 +21,10 @@ CREATE TABLE meal
     description     VARCHAR(32)  NOT NULL,
     calories INT UNSIGNED NOT NULL
 );
+
+-- table config
+ALTER TABLE meal
+    AUTO_INCREMENT = 1;
 
 -- test data
 INSERT INTO meal (description, calories)
