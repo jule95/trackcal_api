@@ -11,19 +11,25 @@ header("Access-Control-Allow-Origin: *");
 //set format of retrieved data to json and characters set to utf8
 header("Content-Type: application/json; charset=UTF-8");
 //specify method which can be used to access this resource
-header("Access-Control-Allow-Methods: DELETE"); //POST instead of DELETE???
+header("Access-Control-Allow-Methods: DELETE");
 //???
 header("Access-Control-Max-Age: 3600");
 //indicate which headers can actually be used to send this post request
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
+//include database configuration to get connection
 include_once "../config/Database.php";
+//include product meal project to perform a create
 include_once "../objects/Meal.php";
 
+//instantiate database
 $database = new Database();
+//create new connection to database
 $conn = $database->getConnection();
 
+//create a new meal
 $meal = new Meal($conn);
+
 $mealsWereDeleted = $meal->deleteAll();
 
 if ($mealsWereDeleted["bool"])
