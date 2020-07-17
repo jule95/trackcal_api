@@ -68,5 +68,3 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     //send failure response because of unallowed method
     Response::sendResponse(false, "method not allowed", 405, null);
 }
-
-//foo

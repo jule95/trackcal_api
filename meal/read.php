@@ -26,11 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] === "GET")
     //instantiate meal object
     $meal = new Meal($conn);
 
-//query meals and get row count
+    //query meals and get row count
     $stmt = $meal->read();
     $num = $stmt->rowCount();
 
-//check if any meals were found
+    //check if any meals were found
     if ($num > 0)
     {
         //create array for meals
