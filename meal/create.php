@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
         //Create new meal object and pass $conn object used to execute queries.
         $meal = new Meal($conn);
 
-        //Set relevant properties and delete meal and store result of query.
+        //Set relevant properties and create meal and store result of query.
         $meal->setDescription($data->description);
         $meal->setCalories($data->calories);
         $mealWasCreated = $meal->create();
@@ -62,6 +62,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST")
     }
 } else
 {
-    //Send failure response because of method is not allowed.
+    //Send failure response because method is not allowed.
     Response::sendResponse(false, "method not allowed", 405, null);
 }

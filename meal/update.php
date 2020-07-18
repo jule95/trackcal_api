@@ -40,8 +40,10 @@ if ($_SERVER["REQUEST_METHOD"] === "PUT")
         $meal->setCalories($data->calories);
         $mealHasUpdated = $meal->update();
 
+        //Check if query executed successfully.
         if ($mealHasUpdated["bool"])
         {
+            //Check if any rows were returned.
             if ($mealHasUpdated["rowCount"] > 0)
             {
                 //Send success response.
@@ -64,6 +66,6 @@ if ($_SERVER["REQUEST_METHOD"] === "PUT")
     }
 } else
 {
-    //Send failure response because of method is not allowed.
+    //Send failure response because method is not allowed.
     Response::sendResponse(false, "method not allowed", 405, null);
 }

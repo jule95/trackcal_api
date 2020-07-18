@@ -52,6 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] === "DELETE")
     }
 } else
 {
-    //Send failure response because of method is not allowed.
+    //Send failure response because method is not allowed.
     Response::sendResponse(false, "method not allowed", 405, null);
 }
