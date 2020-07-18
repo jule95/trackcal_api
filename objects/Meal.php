@@ -144,5 +144,14 @@ class Meal
 
         return ["bool" => false, "rowCount" => null];
     }
+
+    public function toAssocArray()
+    {
+        return [
+            "id" => $this->id,
+            "description" => $this->description,
+            "calories" => $this->calories
+        ];
+    }
 }
 
