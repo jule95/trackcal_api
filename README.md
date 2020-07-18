@@ -1,5 +1,5 @@
-####This is a simple REST API demo.
-<u>How To Deploy</u>
+<h4>This is a simple REST API demo.</h4>
+<u>How To Deploy:</u>
 <ol>
     <li>Copy <i>trackcal_api</i> folder to local Apache.</li>
     <li>Run SQL script on local MySQL server.</li>
@@ -30,7 +30,7 @@ Payload:
 <b>Delete All</b><br/>
 DELETE request to <i>delete_all.php</i>
 
-####To-Do:
+<h4>To-Do:</h4>
 * [ ] Implement routing for clean resource paths (e.g. UPDATE to https://myapi.com/object/1).
 * [ ] Implement test cases using Guzzle and PHPUnit to validate result.
 * [ ] Return affected row for each action in response object.
