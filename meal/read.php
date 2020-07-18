@@ -6,10 +6,12 @@
  * Time: 18:31
  */
 
-//note: no cors headers required since cors does not apply to GET (simple) requests
-//allow all origins to access this resource
+//CORS headers
 header("Access-Control-Allow-Origin: *");
-//set format of retrieved data to json and characters set to utf8
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Max-Age: 3600");//?
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+//Other
 header("Content-Type: application/json; charset=UTF-8");
 
 //include required resources
@@ -17,50 +19,52 @@ include_once "../config/Database.php";
 include_once "../objects/Meal.php";
 include_once "../helper/Response.php";
 
-//instantiate database
-$database = new Database();
-$conn = $database->getConnection();
-
 if ($_SERVER["REQUEST_METHOD"] === "GET")
 {
-    //instantiate meal object
+    //Create new database object and establish a connection.
+    $database = new Database();
+    $conn = $database->getConnection();
+
+    //Create new meal object and pass $conn object used to execute queries.
     $meal = new Meal($conn);
 
-    //query meals and get row count
-    $stmt = $meal->read();
-    $num = $stmt->rowCount();
+    //Fetch all meals and store result of query.
+    $mealsWereFetched = $meal->read();
 
-    //check if any meals were found
-    if ($num > 0)
+    //Check if query executed successfully.
+    if ($mealsWereFetched["bool"])
     {
-        //create array for meals
-        $mealsArr = array();
-        $mealsArr["records"] = array();
-
-        //retrieve table content
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+        //Check if any rows were returned.
+        if ($mealsWereFetched["rowCount"] > 0)
         {
-            $mealItem = array(
-                "id" => $row["id"],
-                "description" => $row["description"],
-                "calories" => $row["calories"]
-            );
+            //Create an array to store all meals.
+            $mealsArr = [];
+            $mealsArr["data"] = [];
 
-            array_push($mealsArr["records"], $mealItem);
+            //Retrieve fetched entries as associative array.
+            while ($row = $mealsWereFetched["stmt"]->fetch(PDO::FETCH_ASSOC))
+            {
+                array_push($mealsArr["data"], [
+                    "id" => $row["id"],
+                    "description" => $row["description"],
+                    "calories" => $row["calories"]
+                ]);
+            }
+
+            //Send success response.
+            Response::sendResponse(true, null, 200, $mealsArr);
+        } else
+        {
+            //Send failure response because no rows returned.
+            Response::sendResponse(false, "0 rows returned", 404, null);
         }
-
-        // set response code - 200 OK
-        http_response_code(200);
-
-        // show meals data in json format
-        echo json_encode($mealsArr);
     } else
     {
-        //send failure response because no rows returned
-        Response::sendResponse(false, "0 rows returned", 404, null);
+        //Send failure response because service is unavailable.
+        Response::sendResponse(false, "service unavailable", 503, null);
     }
 } else
 {
-    //send failure response because of unallowed method
+    //Send failure response because of method is not allowed.
     Response::sendResponse(false, "method not allowed", 405, null);
 }
