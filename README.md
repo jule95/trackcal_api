@@ -31,6 +31,7 @@ Payload:
 DELETE request to <i>delete_all.php</i>
 
 <h4>To-Do:</h4>
+
 * [ ] Implement routing for clean resource paths (e.g. UPDATE to https://myapi.com/object/1).
 * [ ] Implement test cases using Guzzle and PHPUnit to validate result.
 * [ ] Return affected row for each action in response object.
