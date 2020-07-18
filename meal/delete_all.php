@@ -6,53 +6,52 @@
  * Time: 14:09
  */
 
-//allow all origins to access this resource
+//CORS headers
 header("Access-Control-Allow-Origin: *");
-//set format of retrieved data to json and characters set to utf8
-header("Content-Type: application/json; charset=UTF-8");
-//specify method which can be used to access this resource
 header("Access-Control-Allow-Methods: DELETE");
-//???
-header("Access-Control-Max-Age: 3600");
-//indicate which headers can actually be used to send this post request
+header("Access-Control-Max-Age: 3600");//?
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+//Other
+header("Content-Type: application/json; charset=UTF-8");
 
-//include required resources
+//Include all required resources.
 include_once "../config/Database.php";
 include_once "../objects/Meal.php";
 include_once "../helper/Response.php";
 
-//instantiate database
-$database = new Database();
-//create new connection to database
-$conn = $database->getConnection();
-
 if ($_SERVER["REQUEST_METHOD"] === "DELETE")
 {
-    //create a new meal
+    //Create new database object and establish a connection.
+    $database = new Database();
+    $conn = $database->getConnection();
+
+    //Create new meal object and pass $conn object used to execute queries.
     $meal = new Meal($conn);
 
+    //Delete all meals and store result of query.
     $mealsWereDeleted = $meal->deleteAll();
 
+    //Check if query executed successfully.
     if ($mealsWereDeleted["bool"])
     {
+        //Check if any rows were deleted.
         if ($mealsWereDeleted["rowCount"] > 0)
         {
-            //send success response
+            //Send success response.
             Response::sendResponse(true, null, 200, null);
         } else
         {
-            //send failure response because no rows returned and deleted
+            //Send failure response because no rows returned and deleted.
             Response::sendResponse(false, "0 rows returned", 404, null);
         }
 
     } else
     {
-        //send failure response because service is unavailable
+        //Send failure response because service is unavailable.
         Response::sendResponse(false, "service unavailable", 503, null);
     }
 } else
 {
-    //send failure response because of unallowed method
+    //Send failure response because of method is not allowed.
     Response::sendResponse(false, "method not allowed", 405, null);
 }
