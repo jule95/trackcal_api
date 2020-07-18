@@ -6,65 +6,62 @@
  * Time: 12:51
  */
 
-//allow all origins to access this resource
+//CORS headers
 header("Access-Control-Allow-Origin: *");
-//set format of retrieved data to json and characters set to utf8
-header("Content-Type: application/json");
-//specify method which can be used to access this resource from a different domain
 header("Access-Control-Allow-Methods: POST");
-//???
-header("Access-Control-Max-Age: 3600");
-//indicate which headers can actually be used to send this post request
+header("Access-Control-Max-Age: 3600");//?
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+//Other
+header("Content-Type: application/json; charset=UTF-8");
 
-//include required resources
+//Include all required resources.
 include_once "../config/Database.php";
 include_once "../objects/Meal.php";
 include_once "../helper/Response.php";
 
-//instantiate database
-$database = new Database();
-//create new connection to database
-$conn = $database->getConnection();
-
-//get post data
-$data = json_decode(file_get_contents("php://input"));
-
-//check if data is available (optional: empty($data->id))
-$dataIsOk = !empty($data->description) && !empty($data->calories);
-
 if ($_SERVER["REQUEST_METHOD"] === "POST")
 {
+    //Create new database object and establish a connection.
+    $database = new Database();
+    $conn = $database->getConnection();
+
+    //Store received request data in JSON and check if data is valid.
+    $data = json_decode(file_get_contents("php://input"));
+    $dataIsOk = !empty($data->description) && !empty($data->calories);
+
     if ($dataIsOk)
     {
-        //create a new meal
+        //Create new meal object and pass $conn object used to execute queries.
         $meal = new Meal($conn);
 
-        //set properties from received data
+        //Set relevant properties and delete meal and store result of query.
         $meal->setDescription($data->description);
         $meal->setCalories($data->calories);
-
         $mealWasCreated = $meal->create();
 
-        //create meal and check if was executed properly
+        //Check if query executed successfully.
         if ($mealWasCreated["bool"])
         {
-            $additional = ["lastInsertId" => $mealWasCreated["lastInsertId"]];
+            //Prepare additional data to append to response.
+            $additional = [
+                //ID of row that was inserted. Used for DOM list rendering.
+                "lastInsertId" => $mealWasCreated["lastInsertId"]
+            ];
 
-            //send success response
+            //Send success response.
             Response::sendResponse(true, null, 201, $additional);
         } else
         {
-            //send failure response because service is unavailable
+            //Send failure response because service is unavailable.
             Response::sendResponse(false, "service unavailable", 503, null);
         }
     } else
     {
-        //send failure response because of incomplete data
+        //Send failure response because of incomplete data.
         Response::sendResponse(false, "incomplete data", 400, null);
     }
 } else
 {
-    //send failure response because of unallowed method
+    //Send failure response because of method is not allowed.
     Response::sendResponse(false, "method not allowed", 405, null);
 }
