@@ -35,6 +35,5 @@ DELETE request to <i>delete_all.php</i>
 * [ ] Implement routing for clean resource paths (e.g. UPDATE to https://myapi.com/object/1).
 * [ ] Implement test cases using Guzzle and PHPUnit to validate result.
 * [ ] Return affected row for each action in response object.
-Workaround required since UPDATE, DELETE and INSERT do not return a result set.
 * [X] Static helper class to compact JSON server responses.
 * [X] Validate request method in endpoint resources to restrict server-to-server communication.
