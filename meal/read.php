@@ -14,7 +14,7 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 //Other
 header("Content-Type: application/json; charset=UTF-8");
 
-//include required resources
+//Include all required resources.
 include_once "../config/Database.php";
 include_once "../objects/Meal.php";
 include_once "../helper/Response.php";
