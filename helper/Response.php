@@ -4,6 +4,7 @@ class Response
 {
     public static function sendResponse($success, $details, $status, $additional)
     {
+        //Prepare response object.
         $msg = $success ? "operation successful!" : "operation not successful: " . $details;
 
         $responseArr = [
@@ -19,7 +20,7 @@ class Response
             }
         }
 
-        //send response
+        //Send response object.
         http_response_code($status);
 
         echo json_encode($responseArr);

@@ -8,22 +8,22 @@
 
 class Meal
 {
-    //db properties
+    //Database properties
     private $conn;
     private $tableName = "meal";
 
-    //object properties
+    //Meal properties
     private $id;
     private $description;
     private $calories;
 
-    //constructor to initialize db connection
+    //Initialize a database connection upon creating a new meal.
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    //setter
+    //Setter methods used in endpoints (meal directory).
     public function setId($id)
     {
         $this->id = $id;
@@ -39,39 +39,40 @@ class Meal
         $this->calories = $calories;
     }
 
-    // read meals
+    //Fetch all meals from database.
     public function read()
     {
-        //create query for selecting entire table
-        $query = "SELECT id, description, calories FROM " . $this->tableName;
-
-        //prepare query statement
+        $query = "SELECT * FROM " . $this->tableName;
         $stmt = $this->conn->prepare($query);
 
-        //execute query
-        $stmt->execute();
+        /*
+         * bool -> Indicates if statement was executed successfully.
+         * rowCount -> Indicates if any rows were returned by query.
+         * stmt -> Used to fetch rows as array in read.php endpoint.
+         */
+        if ($stmt->execute())
+        {
+            return ["bool" => true, "rowCount" => $stmt->rowCount(), "stmt" => $stmt];
+        }
 
-        //return result set
-        return $stmt;
+        return ["bool" => false, "rowCount" => null, "stmt" => null];
     }
 
-    //create a new meal
+    //Create a new meal.
     public function create()
     {
-        //create insert into query
         $query = "INSERT INTO " . $this->tableName . " (description, calories) values(:description, :calories)";
-
-        //prepare the statement
         $stmt = $this->conn->prepare($query);
 
-        //sanitize user input
         $this->description = htmlspecialchars(strip_tags($this->description));
         $this->calories = htmlspecialchars(strip_tags($this->calories));
 
-        //prepare statement params
         $stmtParams = ["description" => $this->description, "calories" => $this->calories];
 
-        //execute statement with params and check if everything went ok
+        /*
+         * bool -> Indicates if statement was executed successfully.
+         * lastInsertId -> Returns ID of inserted row. Used for DOM list rendering.
+         */
         if ($stmt->execute($stmtParams))
         {
             return ["bool" => true, "lastInsertId" => $this->conn->lastInsertId()];
@@ -80,24 +81,22 @@ class Meal
         return ["bool" => false, "lastInsertedId" => null];
     }
 
-    //update existing meal
+    //Update an existing meal.
     public function update()
     {
-        //create update query
         $query = "UPDATE " . $this->tableName . " SET description = :description, calories = :calories WHERE id = :id";
-
-        //prepare the statement
         $stmt = $this->conn->prepare($query);
 
-        //sanitize input
         $this->id = htmlspecialchars(strip_tags($this->id));
         $this->description = htmlspecialchars(strip_tags($this->description));
         $this->calories = htmlspecialchars(strip_tags($this->calories));
 
-        //prepare statement params
         $stmtParams = ["id" => $this->id, "description" => $this->description, "calories" => $this->calories];
 
-        //execute statement with params and check if everything went ok
+        /*
+         * bool -> Indicates if statement was executed successfully.
+         * rowCount -> Used to check if a row was updated.
+         */
         if ($stmt->execute($stmtParams))
         {
             return ["bool" => true, "rowCount" => $stmt->rowCount()];
@@ -106,22 +105,20 @@ class Meal
         return ["bool" => false, "rowCount" => null];
     }
 
-    //delete an existing meal
+    //Delete an existing meal.
     public function delete()
     {
-        //create delete query
         $query = "DELETE FROM " . $this->tableName . " WHERE id = :id";
-
-        //prepare the statement
         $stmt = $this->conn->prepare($query);
 
-        //sanitize input
         $this->id = htmlspecialchars(strip_tags($this->id));
 
-        //prepare statement params
-        $stmtParams = array("id" => $this->id);
+        $stmtParams = ["id" => $this->id];
 
-        //execute statement with params and check if everything went ok
+        /*
+        * bool -> Indicates if statement was executed successfully.
+        * rowCount -> Used to check if a row was deleted.
+        */
         if ($stmt->execute($stmtParams))
         {
             return ["bool" => true, "rowCount" => $stmt->rowCount()];
@@ -130,16 +127,16 @@ class Meal
         return ["bool" => false, "rowCount" => null];
     }
 
-    //delete all existing meal
+    //Delete all existing meals.
     public function deleteAll()
     {
-        //create delete all query
         $query = "DELETE FROM " . $this->tableName;
-
-        //prepare the statement
         $stmt = $this->conn->prepare($query);
 
-        //execute statement and check if everything went ok
+        /*
+        * bool -> Indicates if statement was executed successfully.
+        * rowCount -> Used to check if rows were deleted.
+        */
         if ($stmt->execute())
         {
             return ["bool" => true, "rowCount" => $stmt->rowCount()];

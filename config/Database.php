@@ -8,39 +8,35 @@
 
 class Database
 {
-    //values for database connection
+    //Values for database connection.
     private $host = "localhost";
     private $dbName = "trackcal";
     private $username = "root";
     private $password = "";
 
-    public $conn;
+    //Connection variable
+    private $conn;
 
     function getConnection()
     {
-        //initially set connection to null
         $this->conn = null;
-
         try
         {
-            //local var to hold dns data for pdo object
-            $dns = "mysql:host=" . $this->host . ";dbname=" . $this->dbName;
+            //Prepare data source name variable.
+            $dsn = "mysql:host=" . $this->host . ";dbname=" . $this->dbName;
 
-            //create new pdo object using values defined above
-            $this->conn = new PDO($dns, $this->username, $this->password);
-            //make sure errors are being displayed
+            //Create new PDO object.
+            $this->conn = new PDO($dsn, $this->username, $this->password);
+            //Set error mode for connection to display all errors as exceptions.
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            //set charset to utf8 to support special characters
+            //Set charset to support special characters.
             $this->conn->exec("set names utf8");
-            //validate connection
         } catch (PDOException $exception)
         {
-            //output error if connection to database failed
+            //Output error if database connection failed.
             echo "failed to connect to db " . $this->dbName . ": " . $exception->getMessage();
         }
 
         return $this->conn;
     }
-
-
 }
